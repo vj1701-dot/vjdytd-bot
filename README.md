@@ -8,7 +8,11 @@ A comprehensive, self-hosted Telegram bot that downloads videos and audio from v
 
 ## 🚀 Quick Start (5 minutes)
 
-**New to this?** Check out the [QUICKSTART.md](QUICKSTART.md) guide!
+**New to this?** Check out the setup guide for your platform:
+- 🐧 **Linux/Mac**: [QUICKSTART.md](QUICKSTART.md)
+- 🪟 **Windows Server**: [WINDOWS-SETUP.md](WINDOWS-SETUP.md)
+
+### Linux / macOS
 
 ```bash
 # 1. Clone and enter directory
@@ -24,12 +28,30 @@ chmod +x setup.sh update.sh
 # 4. That's it! Your bot is running 🎉
 ```
 
-**Need help?** The setup script will guide you through everything!
-
 **To update later:**
 ```bash
 ./update.sh
 ```
+
+### Windows Server
+
+```powershell
+# 1. Clone and enter directory (in PowerShell)
+git clone https://github.com/vj1701-dot/vjdytd-bot.git
+cd vjdytd-bot
+
+# 2. Run setup (will ask for your bot token and credentials)
+.\setup.ps1
+
+# 3. That's it! Your bot is running 🎉
+```
+
+**To update later:**
+```powershell
+.\update.ps1
+```
+
+**Need help?** The setup scripts will guide you through everything!
 
 ---
 
@@ -92,7 +114,10 @@ shared/                # Shared modules
 ## Prerequisites
 
 **Minimal requirements:**
-- A Linux server (VPS, home server, etc.)
+- A server running:
+  - **Linux** (Ubuntu, Debian, etc.) - Recommended
+  - **macOS** with Docker Desktop
+  - **Windows Server** (2016/2019/2022) or Windows 10/11 Pro
 - Docker and Docker Compose installed
 - A Telegram account
 

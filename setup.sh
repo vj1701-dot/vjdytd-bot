@@ -132,6 +132,35 @@ else
     GOFILE_TOKEN=""
 fi
 
+# Local Telegram Bot API
+echo ""
+echo -e "${GREEN}=== Large File Upload Settings ===${NC}"
+print_info "Choose how to handle large files:"
+echo ""
+echo "Option 1: Official Telegram API (default)"
+echo "  - Files up to 50MB → Uploaded to Telegram"
+echo "  - Files 50MB-2GB → Uploaded to GoFile (external service)"
+echo "  - Files >2GB → Uploaded to GoFile"
+echo ""
+echo "Option 2: Local Telegram Bot API (recommended for better Telegram integration)"
+echo "  - Files up to 2GB → Uploaded to Telegram ✅"
+echo "  - Files >2GB → Uploaded to GoFile"
+echo "  - Requires additional Docker container"
+echo ""
+read -p "Enable Local Telegram Bot API for 2GB Telegram uploads? (y/n) [y]: " -n 1 -r USE_LOCAL_API
+echo
+
+# Default to Yes if user just hits enter
+if [[ -z $USE_LOCAL_API ]] || [[ $USE_LOCAL_API =~ ^[Yy]$ ]]; then
+    USE_LOCAL_BOT_API="true"
+    ENABLE_LOCAL_API_SERVICE=true
+    print_success "Local Bot API enabled - files up to 2GB will go to Telegram!"
+else
+    USE_LOCAL_BOT_API="false"
+    ENABLE_LOCAL_API_SERVICE=false
+    print_info "Using official API - files over 50MB will go to GoFile"
+fi
+
 # ===== PERFORMANCE TUNING =====
 echo ""
 echo -e "${BLUE}=== Performance Settings ===${NC}"
@@ -193,7 +222,7 @@ LOG_LEVEL=INFO
 LOG_FILE=/logs/bot.log
 
 # Optional: Local Telegram Bot API
-USE_LOCAL_BOT_API=false
+USE_LOCAL_BOT_API=$USE_LOCAL_BOT_API
 LOCAL_BOT_API_URL=http://telegram-bot-api:8081
 
 # Optional: MTProto
@@ -210,13 +239,26 @@ print_success ".env file created successfully!"
 echo ""
 print_info "Adjusting docker-compose.yml for your setup..."
 
-if [[ ! $SETUP_JDOWNLOADER =~ ^[Yy]$ ]]; then
-    print_info "JDownloader disabled - will use yt-dlp only"
-    # Comment out JDownloader service in docker-compose
+if [[ $ENABLE_LOCAL_API_SERVICE == true ]]; then
+    print_info "Enabling Local Telegram Bot API service..."
+    # Uncomment the telegram-bot-api service in docker-compose.yml
     if command -v sed &> /dev/null; then
-        # Create a version without JDownloader requirement
-        print_info "Note: JDownloader service will still run but won't be required"
+        # Create backup
+        cp docker-compose.yml docker-compose.yml.backup
+
+        # Uncomment telegram-bot-api service and its volume
+        sed -i.bak '/# Optional: Local Telegram Bot API/,/# telegram_bot_api:/s/^  # /  /' docker-compose.yml
+        sed -i.bak 's/^  # telegram_bot_api:/  telegram_bot_api:/' docker-compose.yml
+
+        rm -f docker-compose.yml.bak
+        print_success "Local Bot API service enabled in docker-compose.yml"
+    else
+        print_warning "sed not found - please manually uncomment telegram-bot-api in docker-compose.yml"
     fi
+fi
+
+if [[ ! $SETUP_JDOWNLOADER =~ ^[Yy]$ ]]; then
+    print_info "Note: JDownloader service will run but yt-dlp will be used as primary downloader"
 fi
 
 print_success "Configuration complete!"

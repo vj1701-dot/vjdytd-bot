@@ -38,6 +38,8 @@ chmod +x setup.sh update.sh
 
 ## Step 3: Get Required Credentials
 
+> 💡 **Quick Reference**: See [SETUP-CHECKLIST.md](SETUP-CHECKLIST.md) for a complete checklist!
+
 ### 3.1 Create Telegram Bot
 
 1. Open Telegram and search for [@BotFather](https://t.me/BotFather)
@@ -59,6 +61,14 @@ chmod +x setup.sh update.sh
 2. Send `/start`
 3. **Copy your user ID** (a number like: `123456789`)
 
+### 3.4 (Optional) Create My.JDownloader Account
+
+**Only if you want JDownloader support:**
+
+1. Go to [my.jdownloader.org](https://my.jdownloader.org)
+2. Create a free account
+3. **Copy your email and password** (you'll need these during setup)
+
 ## Step 4: Run Setup
 
 ```bash
@@ -73,10 +83,11 @@ The script will ask you for:
 - ✅ Telegram API Hash (from step 3.2)
 - ✅ Your Telegram User ID (from step 3.3)
 
-**Optional (you can skip these):**
-- ❌ Auto-approve users → Recommended: **No**
-- ❌ JDownloader setup → Recommended: **No** (yt-dlp works great!)
-- ❌ GoFile API token → Recommended: **No** (works without token)
+**Optional (choose based on your needs):**
+- ✅ **Local Bot API** → Recommended: **Yes** (upload files up to 2GB to Telegram instead of 50MB)
+- ✅ **JDownloader** → Recommended: **Yes** if you have My.JDownloader account (better download support)
+- ❌ **Auto-approve users** → Recommended: **No** (for security)
+- ❌ **GoFile API token** → Recommended: **No** (works fine without token)
 
 Just press Enter to use defaults for performance settings.
 

@@ -1,0 +1,9 @@
+fastapi==0.109.0
+uvicorn==0.26.0
+pydantic==2.5.3
+httpx==0.25.2
+redis==5.0.1
+sqlalchemy==2.0.23
+python-dotenv==1.0.0
+myjdapi==1.1.5
+yt-dlp==2024.3.10

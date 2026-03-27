@@ -2,6 +2,37 @@
 
 A comprehensive, self-hosted Telegram bot that downloads videos and audio from various platforms using JDownloader and yt-dlp, with automatic file management and external upload support for large files.
 
+**GitHub Repository**: [https://github.com/vj1701-dot/vjdytd-bot](https://github.com/vj1701-dot/vjdytd-bot)
+
+---
+
+## 🚀 Quick Start (5 minutes)
+
+**New to this?** Check out the [QUICKSTART.md](QUICKSTART.md) guide!
+
+```bash
+# 1. Clone and enter directory
+git clone https://github.com/vj1701-dot/vjdytd-bot.git
+cd vjdytd-bot
+
+# 2. Make scripts executable
+chmod +x setup.sh update.sh
+
+# 3. Run setup (will ask for your bot token and credentials)
+./setup.sh
+
+# 4. That's it! Your bot is running 🎉
+```
+
+**Need help?** The setup script will guide you through everything!
+
+**To update later:**
+```bash
+./update.sh
+```
+
+---
+
 ## Features
 
 ### Core Features
@@ -60,72 +91,60 @@ shared/                # Shared modules
 
 ## Prerequisites
 
-- Docker and Docker Compose
-- Telegram Bot Token (from [@BotFather](https://t.me/botfather))
-- Telegram API ID and Hash (from [my.telegram.org](https://my.telegram.org))
-- JDownloader account (My.JDownloader)
+**Minimal requirements:**
+- A Linux server (VPS, home server, etc.)
+- Docker and Docker Compose installed
+- A Telegram account
 
-## Quick Start
+**Credentials you'll need:**
+- Telegram Bot Token (get from [@BotFather](https://t.me/botfather))
+- Telegram API ID and Hash (get from [my.telegram.org](https://my.telegram.org))
+- Your Telegram User ID (get from [@userinfobot](https://t.me/userinfobot))
 
-### 1. Clone the repository
+**Optional (but makes things better):**
+- JDownloader account (from [my.jdownloader.org](https://my.jdownloader.org)) - Not required! yt-dlp works great
+- GoFile API token - Not required! Works without it
+
+## Installation
+
+### Easy Way (Recommended) ⭐
 
 ```bash
-git clone <your-repo-url>
+# 1. Clone the repository
+git clone https://github.com/vj1701-dot/vjdytd-bot.git
 cd vjdytd-bot
+
+# 2. Make scripts executable
+chmod +x setup.sh update.sh
+
+# 3. Run interactive setup
+./setup.sh
 ```
 
-### 2. Configure environment variables
+The setup script will:
+- ✅ Ask for all your credentials
+- ✅ Create the `.env` configuration file
+- ✅ Optionally start the bot immediately
+- ✅ Guide you through the process
+
+**That's it!** The script handles everything.
+
+### Manual Way
+
+If you prefer manual setup:
 
 ```bash
+# 1. Copy environment template
 cp .env.example .env
-```
 
-Edit `.env` and fill in your credentials:
+# 2. Edit with your credentials
+nano .env
 
-```env
-# Required
-TELEGRAM_BOT_TOKEN=your_bot_token_here
-TELEGRAM_API_ID=your_api_id
-TELEGRAM_API_HASH=your_api_hash
-ADMIN_IDS=123456789,987654321  # Your Telegram user ID(s)
-
-# JDownloader (My.JDownloader account)
-JDOWNLOADER_EMAIL=your_email@example.com
-JDOWNLOADER_PASSWORD=your_password
-JDOWNLOADER_DEVICE_NAME=TelegramBot
-
-# Optional - GoFile API token for better external uploads
-GOFILE_API_TOKEN=your_gofile_token
-```
-
-### 3. Get your Telegram User ID
-
-Send a message to [@userinfobot](https://t.me/userinfobot) to get your Telegram user ID and add it to `ADMIN_IDS` in `.env`.
-
-### 4. Set up JDownloader
-
-1. Create account at [my.jdownloader.org](https://my.jdownloader.org)
-2. Install JDownloader on a server or local machine
-3. Connect it to My.JDownloader using your account
-4. Note the device name (default: computer name)
-
-### 5. Start the services
-
-```bash
+# 3. Start services
 docker-compose up -d
-```
 
-### 6. Check logs
-
-```bash
-# Bot logs
+# 4. Check logs
 docker-compose logs -f telegram-bot
-
-# API service logs
-docker-compose logs -f fastapi-service
-
-# All services
-docker-compose logs -f
 ```
 
 ## Usage
@@ -175,6 +194,62 @@ Simply send a URL to the bot and it will present you with download options via i
 - Files automatically deleted after 48 hours
 - Telegram copies remain intact
 - Cache entries cleaned up with files
+
+## Frequently Asked Questions
+
+### Do I need JDownloader?
+
+**No!** JDownloader is optional. The bot works great with just yt-dlp (which is included).
+
+- **Without JDownloader**: yt-dlp handles all downloads (works for YouTube and most sites)
+- **With JDownloader**: Adds support for more exotic sites and premium accounts
+
+### Why does JDownloader need email/password?
+
+JDownloader uses the My.JDownloader cloud service for remote management. Even self-hosted instances connect to their cloud. But again, **you don't need it** - skip it during setup!
+
+### Do I need to configure Redis?
+
+**No!** Redis works out-of-the-box with zero configuration. The Docker Compose setup handles everything.
+
+### Do I need a GoFile API token?
+
+**No!** GoFile works without a token:
+- **Without token**: Unlimited uploads, files stay active if downloaded occasionally
+- **With token**: Better upload speed limits and longer retention
+
+Free tier is perfectly fine for most users.
+
+### Is the setup really that complex?
+
+**No!** The DEPLOYMENT.md file has advanced options for production deployments. For basic usage:
+1. Run `./setup.sh`
+2. Answer a few questions
+3. Done!
+
+The setup script handles everything for you.
+
+### How do I update the bot?
+
+Simple:
+```bash
+./update.sh
+```
+
+Or manually:
+```bash
+git pull
+docker-compose down
+docker-compose up -d --build
+```
+
+### Can I run this on my home server?
+
+Yes! As long as you have:
+- Linux (Ubuntu, Debian, etc.)
+- Docker installed
+- Internet connection
+- Enough disk space for downloads
 
 ## Configuration
 

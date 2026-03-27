@@ -111,7 +111,7 @@ $useLocalAPI = Read-Host "Enable Local Telegram Bot API for 2GB Telegram uploads
 if ([string]::IsNullOrWhiteSpace($useLocalAPI) -or $useLocalAPI -eq "y") {
     $USE_LOCAL_BOT_API = "true"
     $ENABLE_LOCAL_API_SERVICE = $true
-    Write-Host "[+] Local Bot API enabled - files up to 2GB will go to Telegram!" -ForegroundColor Green
+    Write-Host "[✓] Local Bot API enabled - files up to 2GB will go to Telegram!" -ForegroundColor Green
 } else {
     $USE_LOCAL_BOT_API = "false"
     $ENABLE_LOCAL_API_SERVICE = $false
@@ -196,7 +196,7 @@ CLEANUP_INTERVAL_MINUTES=$CLEANUP_INTERVAL
 "@
 
 $envContent | Out-File -FilePath .env -Encoding UTF8
-Write-Host "[+] .env file created successfully!" -ForegroundColor Green
+Write-Host "[✓] .env file created successfully!" -ForegroundColor Green
 
 # ===== DOCKER COMPOSE ADJUSTMENT =====
 Write-Host ""
@@ -211,32 +211,32 @@ if ($ENABLE_LOCAL_API_SERVICE) {
     # Read file content
     $content = Get-Content docker-compose.yml -Raw
 
-    # Uncomment telegram-bot-api service
-    $content = $content -replace '(?m)^  # (telegram-bot-api:)', '  $1'
-    $content = $content -replace '(?m)^  #   (image: aiogram)', '    $1'
-    $content = $content -replace '(?m)^  #   (container_name)', '    $1'
-    $content = $content -replace '(?m)^  #   (restart)', '    $1'
-    $content = $content -replace '(?m)^  #   (ports:)', '    $1'
-    $content = $content -replace '(?m)^  #     (- "8081)', '      $1'
-    $content = $content -replace '(?m)^  #   (volumes:)', '    $1'
-    $content = $content -replace '(?m)^  #     (- telegram)', '      $1'
-    $content = $content -replace '(?m)^  #   (environment:)', '    $1'
-    $content = $content -replace '(?m)^  #     (- TELEGRAM)', '      $1'
-    $content = $content -replace '(?m)^  #   (networks:)', '    $1'
-    $content = $content -replace '(?m)^  #     (- vjdytd)', '      $1'
-    $content = $content -replace '(?m)^  # (telegram_bot_api:)', '  $1'
+    # Uncomment telegram-bot-api service - simple string replacement
+    $content = $content -replace '(?m)^  # telegram-bot-api:', '  telegram-bot-api:'
+    $content = $content -replace '(?m)^  #   image: aiogram', '    image: aiogram'
+    $content = $content -replace '(?m)^  #   container_name', '    container_name'
+    $content = $content -replace '(?m)^  #   restart', '    restart'
+    $content = $content -replace '(?m)^  #   ports:', '    ports:'
+    $content = $content -replace '(?m)^  #     - "8081', '      - "8081'
+    $content = $content -replace '(?m)^  #   volumes:', '    volumes:'
+    $content = $content -replace '(?m)^  #     - telegram', '      - telegram'
+    $content = $content -replace '(?m)^  #   environment:', '    environment:'
+    $content = $content -replace '(?m)^  #     - TELEGRAM', '      - TELEGRAM'
+    $content = $content -replace '(?m)^  #   networks:', '    networks:'
+    $content = $content -replace '(?m)^  #     - vjdytd', '      - vjdytd'
+    $content = $content -replace '(?m)^  # telegram_bot_api:', '  telegram_bot_api:'
 
     # Write back
     $content | Out-File -FilePath docker-compose.yml -Encoding UTF8
 
-    Write-Host "[+] Local Bot API service enabled in docker-compose.yml" -ForegroundColor Green
+    Write-Host "[✓] Local Bot API service enabled in docker-compose.yml" -ForegroundColor Green
 }
 
 if ($setupJDownloader -ne "y") {
     Write-Host "[i] Note: JDownloader service will run but yt-dlp will be used as primary downloader" -ForegroundColor Blue
 }
 
-Write-Host "[+] Configuration complete!" -ForegroundColor Green
+Write-Host "[✓] Configuration complete!" -ForegroundColor Green
 
 # ===== SUMMARY =====
 Write-Host ""
@@ -270,7 +270,7 @@ if ($startNow -eq "y") {
     if (Get-Command docker-compose -ErrorAction SilentlyContinue) {
         docker-compose up -d
         Write-Host ""
-        Write-Host "[+] Bot started successfully!" -ForegroundColor Green
+        Write-Host "[✓] Bot started successfully!" -ForegroundColor Green
         Write-Host ""
         Write-Host "[i] Checking service status..." -ForegroundColor Blue
         Start-Sleep -Seconds 3
@@ -288,5 +288,5 @@ if ($startNow -eq "y") {
 }
 
 Write-Host ""
-Write-Host "[+] All done! Enjoy your bot! 🤖" -ForegroundColor Green
+Write-Host "[✓] All done! Enjoy your bot! 🤖" -ForegroundColor Green
 Write-Host ""

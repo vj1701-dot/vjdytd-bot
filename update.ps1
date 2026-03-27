@@ -20,19 +20,19 @@ if (-not (Test-Path .env)) {
 Write-Host "[i] Pulling latest code from GitHub..." -ForegroundColor Blue
 git pull
 
-Write-Host "[+] Code updated!" -ForegroundColor Green
+Write-Host "[✓] Code updated!" -ForegroundColor Green
 
 # Stop existing containers
 Write-Host "[i] Stopping existing containers..." -ForegroundColor Blue
 docker-compose down
 
-Write-Host "[+] Containers stopped!" -ForegroundColor Green
+Write-Host "[✓] Containers stopped!" -ForegroundColor Green
 
 # Rebuild and start
 Write-Host "[i] Building and starting updated containers..." -ForegroundColor Blue
 docker-compose up -d --build
 
-Write-Host "[+] Bot updated and restarted!" -ForegroundColor Green
+Write-Host "[✓] Bot updated and restarted!" -ForegroundColor Green
 
 Write-Host ""
 Write-Host "[i] Checking service status..." -ForegroundColor Blue
@@ -40,7 +40,7 @@ Start-Sleep -Seconds 3
 docker-compose ps
 
 Write-Host ""
-Write-Host "[+] Update complete! 🎉" -ForegroundColor Green
+Write-Host "[✓] Update complete! 🎉" -ForegroundColor Green
 Write-Host ""
 Write-Host "[i] View logs with: docker-compose logs -f" -ForegroundColor Blue
 Write-Host ""
